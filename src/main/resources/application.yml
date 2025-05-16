@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: note
+
+  datasource:
+    write:
+      url: jdbc:postgresql://pgbouncer-write:6432/motion-db
+      username: user
+      password: pass
+      hikari:
+        maximum-pool-size: 20
+    read:
+      url: jdbc:postgresql://pgbouncer-read:6432/motion-db
+      username: user
+      password: pass
+      hikari:
+        maximum-pool-size: 40
