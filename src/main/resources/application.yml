@@ -24,5 +24,10 @@ spring:
       ddl-auto: create
     show-sql: true
     properties:
+      temp.use_jdbc_metadata_defaults: false
+      hbm2ddl.auto: none
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8073

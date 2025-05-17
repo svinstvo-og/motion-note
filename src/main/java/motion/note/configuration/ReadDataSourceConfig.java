@@ -33,7 +33,9 @@ public class ReadDataSourceConfig {
                 .persistenceUnit("readPU")
                 .properties(Map.of(
                         "hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect",
-                        "hibernate.hbm2ddl.auto", "none"  // Typically don't want DDL on read replicas
+                        "hibernate.show_sql", "true",
+                        "hibernate.hbm2ddl.auto", "none",
+                        "hibernate.temp.use_jdbc_metadata_defaults", false
                 ))
                 .build();
     }
