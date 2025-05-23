@@ -1,18 +1,18 @@
 package motion.note.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import motion.note.dto.NoteSaveRequest;
 import motion.note.model.Note;
 import motion.note.service.NoteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("motion/api/v1/notes")
+@Slf4j
 public class NoteController {
 
     private final NoteService noteService;
@@ -27,9 +27,11 @@ public class NoteController {
         noteService.addFoo();
     }
 
-    @GetMapping("foo")
+    @GetMapping("/foo")
     public List<Note> getFoo() {
-        return noteService.getAllNotes();
+        List<Note> notes = noteService.getAllNotes();
+        log.info("Found {} notes", notes.size());
+        return notes;
     }
 
     @PostMapping("/new/{name}")

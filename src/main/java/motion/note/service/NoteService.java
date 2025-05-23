@@ -52,11 +52,14 @@ public class NoteService {
         return notes;
     }
 
+    @Transactional
     public void createNote(String name, UUID userId) {
         Note note = new Note();
         note.setName(name);
         note.setUserId(userId);
         note.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        log.info("Saving note {}", note.getName());
+        noteWriteRepository.save(note);
     }
 
 

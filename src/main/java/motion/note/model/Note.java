@@ -33,6 +33,6 @@ public class Note {
     private Timestamp updatedAt;
     @JsonProperty("s3-key")
     private String s3key;
-    @JsonProperty("s3bucket")
+    @JsonProperty("s3-bucket")
     private String s3bucket;
 }
