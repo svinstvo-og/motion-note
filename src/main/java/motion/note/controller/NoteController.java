@@ -46,7 +46,7 @@ public class NoteController {
             //TODO updating the title
         }
         if (request.getContent() != null) {
-            noteService.saveContent(request.getContent(), userIdString, noteId);
+            noteService.saveContent(request.getContent(), userIdString, noteId, false);
         }
     }
 }

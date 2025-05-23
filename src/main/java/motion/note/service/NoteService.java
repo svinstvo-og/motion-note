@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -62,15 +63,33 @@ public class NoteService {
         noteWriteRepository.save(note);
     }
 
-
-    public void saveContent(String content, String userId, String noteId) {
-        String key = "users/" + userId + "/notes/" + noteId;
-        log.info("Saving content with key {}", key);
-        try {
-            s3StorageService.uploadFile(key, content.getBytes());
+    public void saveContent(String content, String userId, String noteId, boolean authorized) {
+        Optional<Note> noteOptional = noteReadRepository.findById(UUID.fromString(noteId));
+        if (noteOptional.isPresent()) {
+            Note note = noteOptional.get();
+            if (note.getUserId().toString().equals(userId) || authorized) {
+                String key = "users/" + userId + "/notes/" + noteId;
+                log.info("Saving content of note {} with key {}", note.getName(), key);
+                try {
+                    s3StorageService.uploadFile(key, content.getBytes());
+                }
+                catch (Exception e) {
+                    log.error("Uploading content failed: {}", e.getMessage());
+                    throw new RuntimeException(e);
+                }
+                note.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                note.setS3key(key);
+                noteWriteRepository.save(note);
+            }
+            else {
+                log.error("User with id {} does not have permission to write to note: {}", userId, note.getName());
+                throw new RuntimeException("User does not have permission to write note");
+            }
         }
-        catch (Exception e) {
-            log.error(e.getMessage());
+        else {
+            log.error("Note with id {} does not exist", noteId);
+            throw new RuntimeException("Note with id " + noteId + " does not exist");
         }
+        log.info("Note {} saved", noteOptional.get().getName());
     }
 }
