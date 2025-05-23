@@ -29,13 +29,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-aws:
-  credentials:
-    access-key: ${AWS_ACCESS_KEY}
-    secret-key: ${AWS_SECRET_ACCESS_KEY}
-  region: eu-north-1
-  s3:
-    bucket-name: motion-note-content
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region: eu-north-1
+    s3:
+      bucket-name: motion-note-content
 
 server:
   port: 8073

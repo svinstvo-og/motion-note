@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import motion.note.model.Note;
 import motion.note.repository.NoteReadRepository;
 import motion.note.repository.NoteWriteRepository;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +23,12 @@ public class NoteService {
 
     NoteReadRepository noteReadRepository;
     NoteWriteRepository noteWriteRepository;
+    S3StorageService s3StorageService;
 
-    public NoteService(NoteReadRepository noteReadRepository, NoteWriteRepository noteWriteRepository) {
+    public NoteService(NoteReadRepository noteReadRepository, NoteWriteRepository noteWriteRepository, S3StorageService s3StorageService) {
         this.noteReadRepository = noteReadRepository;
         this.noteWriteRepository = noteWriteRepository;
+        this.s3StorageService = s3StorageService;
     }
 
     @Transactional
@@ -54,5 +57,17 @@ public class NoteService {
         note.setName(name);
         note.setUserId(userId);
         note.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+
+    public void saveContent(String content, String userId, String noteId) {
+        String key = "users/" + userId + "/notes/" + noteId;
+        log.info("Saving content with key {}", key);
+        try {
+            s3StorageService.uploadFile(key, content.getBytes());
+        }
+        catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

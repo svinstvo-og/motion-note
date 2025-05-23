@@ -1,5 +1,6 @@
 package motion.note.controller;
 
+import motion.note.dto.NoteSaveRequest;
 import motion.note.model.Note;
 import motion.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,15 @@ public class NoteController {
     public void createNote(@PathVariable String name, @RequestHeader("X-User-Context") String userIdString) {
         UUID userId = UUID.fromString(userIdString);
         noteService.createNote(name, userId);
+    }
+
+    @PatchMapping("/{noteId}/save")
+    public void saveNote(@PathVariable String noteId, @RequestHeader("X-User-Context") String userIdString, @RequestBody NoteSaveRequest request) {
+        if (request.getTitle() != null) {
+            //TODO updating the title
+        }
+        if (request.getContent() != null) {
+            noteService.saveContent(request.getContent(), userIdString, noteId);
+        }
     }
 }
