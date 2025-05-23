@@ -41,12 +41,18 @@ public class NoteController {
     }
 
     @PatchMapping("/{noteId}/save")
-    public void saveNote(@PathVariable String noteId, @RequestHeader("X-User-Context") String userIdString, @RequestBody NoteSaveRequest request) {
+    public void saveNote(@PathVariable String noteId, @RequestHeader("X-User-Context") String userIdString,
+                         @RequestBody NoteSaveRequest request) {
         if (request.getTitle() != null) {
             //TODO updating the title
         }
         if (request.getContent() != null) {
             noteService.saveContent(request.getContent(), userIdString, noteId, false);
         }
+    }
+
+    @GetMapping("/{noteId}/content")
+    public String getNoteContent(@PathVariable String noteId, @RequestHeader("X-User-Context") String userIdString) {
+        return noteService.getNoteContent(noteId, userIdString, false);
     }
 }

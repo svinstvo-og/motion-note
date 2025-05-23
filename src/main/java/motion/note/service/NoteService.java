@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -91,5 +93,24 @@ public class NoteService {
             throw new RuntimeException("Note with id " + noteId + " does not exist");
         }
         log.info("Note {} saved", noteOptional.get().getName());
+    }
+
+    public String getNoteContent(String noteId, String userId, boolean authorised) {
+        String content = "";
+        Optional<Note> noteOptional = noteReadRepository.findById(UUID.fromString(noteId));
+        if (noteOptional.isPresent()) {
+            Note note = noteOptional.get();
+            if (note.getUserId().toString().equals(userId) || authorised) {
+                String key = "users/" + userId + "/notes/" + noteId;
+                log.info("Getting content of note {} with key {}", note.getName(), key);
+                byte[] bytes = s3StorageService.downloadFile(key);
+                content = new String(bytes, StandardCharsets.UTF_8);
+            }
+        }
+        else {
+            log.error("Note with id {} does not exist", noteId);
+            throw new RuntimeException("Note with id " + noteId + " does not exist");
+        }
+        return content;
     }
 }
