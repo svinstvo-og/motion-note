@@ -1,10 +1,7 @@
 package motion.note.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "notes")
 public class Note {
 
     @Id
@@ -33,6 +31,4 @@ public class Note {
     private Timestamp updatedAt;
     @JsonProperty("s3-key")
     private String s3key;
-//    @JsonProperty("s3-bucket")
-//    private String s3bucket;
 }

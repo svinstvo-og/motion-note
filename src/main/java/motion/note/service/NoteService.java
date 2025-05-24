@@ -84,7 +84,7 @@ public class NoteService {
                 noteWriteRepository.save(note);
             }
             else {
-                log.error("User with id {} does not have permission to write to note: {}", userId, note.getName());
+                log.error("Uploading content failed. User with id {} does not have permission to write to note: {}", userId, note.getName());
                 throw new RuntimeException("User does not have permission to write note");
             }
         }
@@ -108,7 +108,7 @@ public class NoteService {
             }
         }
         else {
-            log.error("Note with id {} does not exist", noteId);
+            log.error("Loading content failed. Note with id {} does not exist", noteId);
             throw new RuntimeException("Note with id " + noteId + " does not exist");
         }
         return content;
