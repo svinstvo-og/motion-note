@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,4 +32,7 @@ public class Note {
     private Timestamp updatedAt;
     @JsonProperty("s3-key")
     private String s3key;
+
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Link> links;
 }

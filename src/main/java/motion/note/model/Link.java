@@ -18,8 +18,12 @@ import java.util.List;
 public class Link {
     @Id
     @Column(length = 8)
-    public String token;
-    public Timestamp validUntil;
+    private String token;
+    private Timestamp validUntil;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "noteId")
+    private Note note;
 
     @ManyToMany(mappedBy = "links")
     private List<User> users;
