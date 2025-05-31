@@ -19,6 +19,11 @@ public class User {
     @Id
     public UUID userId;
 
-    @ManyToMany(mappedBy = "links")
-    public List<Link> links;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_links",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "link_token")
+    )
+    private List<Link> links;
 }

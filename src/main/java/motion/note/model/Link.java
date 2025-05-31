@@ -22,5 +22,5 @@ public class Link {
     public Timestamp validUntil;
 
     @ManyToMany(mappedBy = "links")
-    List<User> users;
+    private List<User> users;
 }
