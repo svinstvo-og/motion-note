@@ -15,7 +15,7 @@ public class HashRefillEventPublisher {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishOrderCreatedEvent() {
+    public void publishRefillRequest() {
         log.info("Sending hash refill request");
         kafkaTemplate.send(TOPIC, "");
     }

@@ -113,4 +113,23 @@ public class NoteService {
         }
         return content;
     }
+
+    @Transactional(readOnly = true)
+    public Note validateNote(UUID noteId, String userId) {
+        Optional<Note> note = noteReadRepository.findById(noteId);
+
+        if (note.isPresent()) {
+            if (note.get().getUserId().toString().equals(userId)) {
+                return note.get();
+            }
+            else {
+                log.error("User with id {} does not have authorities to create link to note with id {}", userId, noteId);
+                throw new RuntimeException("User does not have authorities to create link to note with id " + noteId);
+            }
+        }
+        else {
+            log.error("Note with id {} does not exist", noteId);
+            throw new RuntimeException("Note with id " + noteId + " does not exist");
+        }
+    }
 }

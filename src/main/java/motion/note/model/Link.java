@@ -20,6 +20,7 @@ public class Link {
     @Column(length = 8)
     private String token;
     private Timestamp validUntil;
+    private Timestamp createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "noteId")
