@@ -2,6 +2,7 @@ package motion.note.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import motion.note.dto.NoteListResponse;
 import motion.note.model.Note;
 import motion.note.repository.NoteReadRepository;
 import motion.note.repository.NoteWriteRepository;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -47,9 +45,17 @@ public class NoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<Note> getAllNotes() {
+    public List<NoteListResponse> getAllNotes() {
         log.info("Getting all notes");
-        List<Note> notes = noteReadRepository.findAll();
+        List<Note> tempNotes = noteReadRepository.findAll();
+        List<NoteListResponse> notes = new ArrayList<>();
+        NoteListResponse noteResponse;
+
+        for (Note note : tempNotes) {
+            noteResponse = new NoteListResponse(note);
+            notes.add(noteResponse);
+        }
+
         log.info("Returning all notes");
         //System.out.println(notes.toString());
         return notes;

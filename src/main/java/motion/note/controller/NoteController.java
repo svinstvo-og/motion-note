@@ -1,8 +1,8 @@
 package motion.note.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import motion.note.dto.NoteListResponse;
 import motion.note.dto.NoteSaveRequest;
-import motion.note.model.Note;
 import motion.note.service.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +28,8 @@ public class NoteController {
     }
 
     @GetMapping("/foo")
-    public List<Note> getFoo() {
-        List<Note> notes = noteService.getAllNotes();
+    public List<NoteListResponse> getFoo() {
+        List<NoteListResponse> notes = noteService.getAllNotes();
         log.info("Found {} notes", notes.size());
         return notes;
     }
